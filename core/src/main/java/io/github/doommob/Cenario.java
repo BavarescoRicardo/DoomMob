@@ -9,24 +9,19 @@ public class Cenario {
     private Color borderColor;
     private Color dotColor;
 
-    private float lineEndX, lineEndY; // End point of the line
+    private float angle; // Angle of the line in radians
 
-    public Cenario(float x, float y, float radius, Color borderColor,
-                   Color dotColor) {
+    public Cenario(float x, float y, float radius, Color borderColor, Color dotColor) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.borderColor = borderColor;
         this.dotColor = dotColor;
-
-        // Default line pointing to the top
-        this.lineEndX = radius;
-        this.lineEndY = radius;
+        this.angle = 0; // Default pointing upwards
     }
 
-    public void setLineEnd(float endX, float endY) {
-        this.lineEndX = endX;
-        this.lineEndY = endY;
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
     public void draw(ShapeRenderer shapeRenderer) {
@@ -35,7 +30,11 @@ public class Cenario {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.circle(x, y, radius);
 
-        // Draw the line from the center to the dynamic endpoint
+        // Calculate endpoint of the line based on the angle
+        float lineEndX = x + radius * (float) Math.cos(angle);
+        float lineEndY = y + radius * (float) Math.sin(angle);
+
+        // Draw the line from the center to the calculated endpoint
         shapeRenderer.line(x, y, lineEndX, lineEndY);
         shapeRenderer.end();
 

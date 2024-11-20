@@ -74,7 +74,10 @@ public class Direcional {
             innerDotY = y + dy * scale;
         }
 
-        // Notify the Cenario about the new direction
-        cenario.setLineEnd(innerDotX, innerDotY);
+        // Calculate the angle of the drag
+        float angle = (float) Math.atan2(innerDotY - y, innerDotX - x);
+
+        // Notify the Cenario about the new angle
+        cenario.setAngle(angle);
     }
 }
