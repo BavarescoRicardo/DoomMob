@@ -68,6 +68,16 @@ public class Direcional {
         }
     }
 
+    public float getMovementIntensity() {
+        float dx = innerDotX - x;
+        float dy = innerDotY - y;
+        return (float) Math.sqrt(dx * dx + dy * dy) / radius; // Intensidade normalizada (0 a 1)
+    }
+
+    public boolean isBeingTouched() {
+        return Math.abs(innerDotX - x) > 0.01f || Math.abs(innerDotY - y) > 0.01f;
+    }
+
     public float getAngle() {
         return (float) Math.atan2(innerDotY - y, innerDotX - x);
     }

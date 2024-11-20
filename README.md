@@ -1,35 +1,72 @@
-# DoomMobRba
+# DoomMobRba 🎮
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+DoomMobRba é um jogo inspirado no clássico **Doom**, desenvolvido em **Java** utilizando o framework [libGDX](https://libgdx.com/). O projeto busca recriar a experiência de exploração e combate em primeira pessoa, com foco em aprendizado e desenvolvimento técnico.
 
-This project was generated with a template including simple application launchers and a main class extending `Game` that sets the first screen.
+---
 
-## Platforms
+## 🚀 Funcionalidades
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `android`: Android mobile platform. Needs Android SDK.
+- **Renderização 3D Simples**: Raycasting para simular gráficos em primeira pessoa.
+- **Movimentação Realista**: Controle preciso do jogador com sistema de colisão.
+- **Mapas Dinâmicos**: Estrutura baseada em grid com paredes e áreas transitáveis.
+- **Compatibilidade Multiplataforma**: Suporte para desktop e Android.
 
-## Gradle
+---
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+## 🛠️ Estrutura do Projeto
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+Este projeto é modular, dividido nas seguintes plataformas:
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+### **Core**
+Contém toda a lógica principal do jogo, compartilhada entre as plataformas.
+
+### **LWJGL3**
+Plataforma de desktop que utiliza o LWJGL3 para execução do jogo em computadores.
+
+### **Android**
+Plataforma móvel para execução do jogo em dispositivos Android. Requer o **Android SDK** para build.
+
+---
+
+## ⚙️ Gradle
+
+O projeto utiliza [Gradle](https://gradle.org/) para gerenciamento de dependências e build. Use o wrapper do Gradle (`gradlew.bat` no Windows ou `./gradlew` no Linux/Mac) para executar as seguintes tarefas:
+
+### Tarefas Comuns
+
+- **`build`**: Compila os fontes e cria os arquivos executáveis.
+- **`clean`**: Remove os diretórios de build.
+- **`lwjgl3:run`**: Inicia o jogo na plataforma desktop.
+- **`lwjgl3:jar`**: Gera um arquivo JAR executável para desktop.
+- **`android:lint`**: Realiza validações do projeto Android.
+- **`test`**: Executa os testes unitários (se houver).
+
+### Flags Úteis
+
+- `--continue`: Continua a execução das tarefas mesmo em caso de erro.
+- `--daemon`: Usa o Gradle Daemon para melhorar a performance.
+- `--offline`: Utiliza dependências armazenadas em cache.
+- `--refresh-dependencies`: Revalida todas as dependências.
+
+---
+
+## 🗺️ Mapa
+
+O mapa é estruturado em uma grade (`grid`), onde:
+
+- `0`: Espaço vazio (transitável).
+- `1`: Paredes (bloqueiam movimento).
+
+Exemplo de mapa no código:
+
+```java
+int[][] grid = {
+    {1, 1, 1, 1, 1},
+    {1, 0, 0, 0, 1},
+    {1, 0, 1, 0, 1},
+    {1, 0, 0, 0, 1},
+    {1, 1, 1, 1, 1}
+};
+
+
+./gradlew lwjgl3:run
