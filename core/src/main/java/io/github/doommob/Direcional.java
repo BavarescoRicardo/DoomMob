@@ -9,29 +9,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Direcional {
     private float x, y; // Center position
     private float radius; // Outer circle radius
+    private float innerDotX, innerDotY; // Inner circle position
     private Color borderColor;
     private Color dotColor;
-
     private Texture circleTexture;
-    private float innerDotX, innerDotY; // Position of the draggable inner circle
-    private Cenario cenario; // Reference to Cenario
 
     public Direcional(float x, float y, float radius, Color borderColor, Color dotColor, Cenario cenario) {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.innerDotX = x; // Start inner dot at the center
+        this.innerDotY = y;
         this.borderColor = borderColor;
         this.dotColor = dotColor;
-        this.cenario = cenario;
-
-        // Load the circle texture
         circleTexture = new Texture(Gdx.files.internal("circle.png"));
-
-        // Initialize the inner dot position
-        innerDotX = x;
-        innerDotY = y;
     }
-
     public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch) {
         // Draw the outer circle
         shapeRenderer.setColor(borderColor);
@@ -56,8 +48,9 @@ public class Direcional {
     }
 
     public boolean isTouched(float touchX, float touchY) {
-        float distance = (float) Math.sqrt((touchX - innerDotX) * (touchX - innerDotX) + (touchY - innerDotY) * (touchY - innerDotY));
-        return distance <= 20;
+        float dx = touchX - x;
+        float dy = touchY - y;
+        return Math.sqrt(dx * dx + dy * dy) <= radius;
     }
 
     public void updateInnerDotPosition(float touchX, float touchY) {
@@ -69,14 +62,10 @@ public class Direcional {
             innerDotX = touchX;
             innerDotY = touchY;
         } else {
-            float scale = radius / distance;
-            innerDotX = x + dx * scale;
-            innerDotY = y + dy * scale;
+            // Keep the inner dot constrained to the circle's border
+            innerDotX = x + dx / distance * radius;
+            innerDotY = y + dy / distance * radius;
         }
-        // Calculate the angle of the drag
-        float angle = (float) Math.atan2(innerDotY - y, innerDotX - x);
-        // Notify the Cenario about the new angle
-        cenario.setAngle(angle);
     }
 
     public float getAngle() {

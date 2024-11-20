@@ -12,11 +12,13 @@ public class FirstScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private Direcional direcional;
     private Cenario cenario;
+    private Mapa mapa;
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        mapa = new Mapa();
 
         // Create Cenario at position (580, 520) with radius 485
         cenario = new Cenario(580, 520, 485, Color.WHITE, Color.RED);
@@ -40,12 +42,53 @@ public class FirstScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1); // Clear screen with black
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
-        // Render shapes
-        cenario.draw(shapeRenderer);
+        // Define parâmetros do jogador
+        float playerX = 2.5f; // Posição no grid
+        float playerY = 2.5f;
+        float playerAngle = direcional.getAngle();
+
+        // Projeção de "raios"
+        int numRays = 100; // Resolução horizontal
+        float fov = (float) Math.toRadians(60); // Campo de visão
+        float rayStep = fov / numRays;
+
+        for (int i = 0; i < numRays; i++) {
+            float rayAngle = playerAngle - fov / 2 + i * rayStep;
+            float distance = castRay(playerX, playerY, rayAngle);
+
+            // Calcula altura da parede
+            float wallHeight = 480 / distance;
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.GRAY);
+            shapeRenderer.rect(i * 8, 240 - wallHeight / 2, 8, wallHeight); // 8 é a largura de cada "coluna"
+            shapeRenderer.end();
+        }
+
+        // Renderiza o Direcional
         direcional.draw(shapeRenderer, batch);
+    }
+
+    private float castRay(float startX, float startY, float angle) {
+        float x = startX;
+        float y = startY;
+        float stepX = (float) Math.cos(angle) * 0.1f;
+        float stepY = (float) Math.sin(angle) * 0.1f;
+
+        while (true) {
+            x += stepX;
+            y += stepY;
+
+            int tileX = (int) x;
+            int tileY = (int) y;
+
+            if (mapa.getTile(tileX, tileY) == 1) {
+                return (float) Math.sqrt((x - startX) * (x - startX) + (y - startY) * (y - startY));
+            }
+        }
     }
 
     @Override
