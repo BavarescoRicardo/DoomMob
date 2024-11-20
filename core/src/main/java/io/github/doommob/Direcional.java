@@ -73,11 +73,13 @@ public class Direcional {
             innerDotX = x + dx * scale;
             innerDotY = y + dy * scale;
         }
-
         // Calculate the angle of the drag
         float angle = (float) Math.atan2(innerDotY - y, innerDotX - x);
-
         // Notify the Cenario about the new angle
         cenario.setAngle(angle);
+    }
+
+    public float getAngle() {
+        return (float) Math.atan2(innerDotY - y, innerDotX - x);
     }
 }
